@@ -1,0 +1,30 @@
+.cardContanier {
+    background-color: white;
+    border: 1px solid black;
+    height: 520px;
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 200px;
+    
+}
+
+.picContainer {
+    background: black;
+    margin: 20px;
+    width: 210px;
+    height: 450px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+#buttonLeft {
+    margin: 5px;
+}
+
+#buttonRight {
+    margin: 5px;
+}
