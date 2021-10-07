@@ -1,30 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<!--  -->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="Astyle.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <div class="cardContanier">
-        <div class="picContainer">
-            <div>
+    <div class="wrapper">
+        <div class="card">
+            <div class="card__icons">
+                <div class="card__icons-item">A</div>
+                <div class="card__icons-item">B</div>
+                <div class="card__icons-item">C</div>
+                <div class="card__icons-item">D</div>
             </div>
-        </div>
-        <div class="buttons">
-            <div id="buttonLeft">
-                <a href="">LEFT</a>
+            <div class="card__inner">
+
+
+                <div class="cardContanier">
+                    <div class="picContainer">
+                        <div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <div id="buttonLeft">
+                            <a href="">LEFT</a>
+                        </div>
+                        <div id="buttonRight">
+                            <a href="">RIGHT</a>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
-            <div id="buttonRight">
-                <a href="">RIGHT</a>
+            <div class="card__years">
+                <div class="years__info">
+                    <div class="info__name">Robert</div>
+                    <div class="info__score">607</div>
+                </div>
             </div>
         </div>
     </div>
-    <script src="main.js"></script>
-</body>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</body>
 </html>
