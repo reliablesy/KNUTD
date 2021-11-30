@@ -1,101 +1,143 @@
-const DATA = [
-    {
-        question: 'Вопрос 1',
-        answers: [
-            {
-                id: '1',
-                value: 'Ответ 1',
-                allStatus: 4
-            },
-            {
-                id: '2',
-                value: 'Ответ 2',
-                allStatus: 5
-            },
-            {
-                id: '3',
-                value: 'Ответ 3',
-                allStatus: 7
-            },
-        ]
-    },
-    {
-        question: 'Вопрос 2',
-        answers: [
-            {
-                id: '4',
-                value: 'Ответ 4',
-                allStatus: 15
-            },
-            {
-                id: '5',
-                value: 'Ответ 5',
-                allStatus: 18
-            },
-        ]
-    }
+const ALL_QUESTIONS = [
+  {
+    text: "Вопрос 1",
+    answers: [
+      {
+        text: "Ответ 1",
+        reward: 1,
+      },
+      {
+        text: "Ответ 2",
+        reward: 2,
+      },
+      {
+        text: "Ответ 3",
+        reward: 3,
+      },
+    ],
+  },
+  {
+    text: "Вопрос 2",
+    answers: [
+      {
+        text: "Ответ 4",
+        reward: 1,
+      },
+      {
+        text: "Ответ 5",
+        reward: 2,
+      },
+    ],
+  },
 ];
 
-let localresults = {};
-let nowStatus = 0;
+const game = {
+  currentQuestionIndex: 0,
+  currentAnswerIndex: null,
+  answeredQuestions: [],
+  isFinished: false,
+};
 
-const quiz = document.getElementById('quiz');
-const questions = document.getElementById('questions');
-const results = document.getElementById('results');
-const indicator = document.getElementById('indicator');
-const btnNext = document.getElementById('btn-next');
-const btnRestart = document.getElementById('btn-restart');
-const stats = document.getElementById('stats');
+const selectAnswer = (index) => {
+  game.currentAnswerIndex = index;
 
-const renderQuestion = (index) => {
-    questions.dataset.currentStep = index;
-    renderIndicator(index + 1);
-    const renderAnswers = () => {
-        return DATA[index].answers.map((answer) => {
-            return `
-                    <li>
-                       <label>
-                           <input class="answer-input" type="radio" name=${index} value=${answer.id} data-status=${DATA[index].answers.allStatus}>
-                           ${answer.value}
-                       </label>
-                   </li>
-`;
-        })
-            .join('');
-    };
-    questions.innerHTML = `
-    <div class="quiz-questions-item">
-               <div class="quiz-questions-item_question">${DATA[index].question}</div>
-               <ul class="quiz-questions-item_answers">
-                   ${renderAnswers()}
-               </ul>
-           </div>
+  render();
+};
+
+const renderQuiz = () => {
+  const index = game.currentQuestionIndex;
+
+  const { answers, text } = ALL_QUESTIONS[index];
+
+  const form = document.createElement("form");
+
+  form.classList.add("quiz");
+
+  form.innerHTML = `
+        <div class="quiz-text">
+          ${text}
+        </div>
+        <ul class="quiz-anwsers">
+            ${answers
+              .map((answer, index) => {
+                return `
+                  <li>
+                    <label>
+                      <input
+                        class="quiz-anwsers-input"
+                        type="radio"
+                        name="currentAnswer"
+                        value=${index}
+                        onclick="selectAnswer(${index})"
+                        ${game.currentAnswerIndex === index ? "checked" : ""}
+                      >
+                      ${answer.text}
+                    </label>
+                  </li>
+                `;
+              })
+              .join(``)}
+        </ul>
+        <div>
+          ${game.currentQuestionIndex + 1}/${ALL_QUESTIONS.length}
+        </div>
+        <button ${
+          game.currentAnswerIndex !== null ? "" : "disabled"
+        }>Далее</button>
     `;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const question = ALL_QUESTIONS[game.currentQuestionIndex];
+
+    const answer = question.answers[game.currentAnswerIndex];
+
+    game.answeredQuestions.push({
+      question,
+      answer,
+    });
+
+    onNextQuestion();
+  });
+
+  return form;
 };
 
-const renderIndicator = (currentStep) => {
-    indicator.innerHTML = `${currentStep}/${DATA.length}`;
+const renderResultsScreen = () => {
+  const element = document.createElement('div');
+
+  const totalScore = game.answeredQuestions.reduce((acc, { answer }) => acc + answer.reward, 0);
+
+  element.innerHTML = `Мои поздравления! Вы набрали ${totalScore} очков!`
+
+  return element;
+}
+
+const onNextQuestion = () => {
+  const isLastQuestion = ALL_QUESTIONS.length === game.currentQuestionIndex + 1;
+
+  game.isFinished = isLastQuestion;
+
+  if (!isLastQuestion) {
+    game.currentQuestionIndex++;
+    game.currentAnswerIndex = null;
+  }
+
+  render();
 };
 
-const renderResults = (index) => {};
+let app;
 
-quiz.addEventListener('change', (event) => {
-    if (event.target.classList.contains('answer-input')) {
-        console.log(event.target.defaultValue);
-        btnNext.disabled = false;
-    }
-});
+const main = () => {
+  app = document.getElementById('app');
+  render();
+};
 
-quiz.addEventListener('click', (event) => {
-    if (event.target.classList.contains('btn-next')) {
-        if (DATA.length === Number(questions.dataset.currentStep) + 1) {
+const render = () => {
+  const element = game.isFinished ? renderResultsScreen() : renderQuiz();
 
-        } else {
-            renderQuestion(Number(questions.dataset.currentStep) + 1)
-        }
-        btnNext.disabled = true;
-    }
-});
-renderQuestion(0);
+  app.replaceChildren(element);
+};
 
-
+main();
