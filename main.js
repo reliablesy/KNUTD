@@ -360,7 +360,13 @@ const renderResultsScreen = () => {
 
   const totalScore = game.answeredQuestions.reduce((acc, { answer }) => acc + answer.reward, 0);
 
-  element.innerHTML = `Мои поздравления! Вы набрали ${totalScore} очков!`
+   if(totalScore < 5) {
+      element.innerHTML = `Мои поздравления! Вы набрали ${totalScore} очков! И ЭТО СЛАБОВАТО!`
+  } else if (totalScore > 5) {
+      element.innerHTML = `Мои поздравления! Вы набрали ${totalScore} очков! В принципе пойдёт!`
+  } else if (totalScore == 0) {
+      element.innerHTML = `Мои поздравления! Вы набрали ${totalScore} очков! ВЫ ПРОДУЛИ, ГОСПОДА`
+  }
 
   return element;
 }
