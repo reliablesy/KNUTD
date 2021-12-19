@@ -313,7 +313,7 @@ const renderQuiz = () => {
               .map((answer, index) => {
                 return `
                   <li>
-                    <label>
+                  <label class="label">
                       <input
                         class="quiz-anwsers-input"
                         type="radio"
@@ -322,7 +322,8 @@ const renderQuiz = () => {
                         onclick="selectAnswer(${index})"
                         ${game.currentAnswerIndex === index ? "checked" : ""}
                       >
-                      ${answer.text}
+                      <span class="checkbox"></span>
+                      <span class="answer-text">${answer.text}</>
                     </label>
                   </li>
                 `;
@@ -332,7 +333,7 @@ const renderQuiz = () => {
         <div>
           ${game.currentQuestionIndex + 1}/${ALL_QUESTIONS.length}
         </div>
-        <button ${
+        <button class="btn" ${
           game.currentAnswerIndex !== null ? "" : "disabled"
         }>Далее</button>
     `;
@@ -357,7 +358,7 @@ const renderQuiz = () => {
 
 const renderResultsScreen = () => {
   const element = document.createElement('div');
-
+  element.className = 'results';
   const totalScore = game.answeredQuestions.reduce((acc, { answer }) => acc + answer.reward, 0);
 
    if(totalScore < 5) {
